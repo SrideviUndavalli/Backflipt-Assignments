@@ -1,0 +1,48 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+     width:50%;
+    height:100vh;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+#line1{
+    display:flex;
+    align-items:center;
+    background-color: rgb(23, 24, 32);
+}
+#line11 {
+    font-size: 550%;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+}
+
+#line12 {
+    font-size: 150%;
+    color: white;
+    font-weight: bold;
+
+}
+.a{
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+}
+.b{
+    font-size:200%;
+    color:white;
+    margin-left:3%;
+}
+.c{
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    background-color:rgb(20, 23, 32);
+}
+.d{
+    border:darkblue;
+    border-radius: 25%;
+}
