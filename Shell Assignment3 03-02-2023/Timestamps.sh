@@ -8,50 +8,42 @@ sed -i "s/:{/ /g" start.txt
 
 #taking timestamps from user as input to get logs in between them
 #reading starting timestamp 
-read -p "Enter the starting timestamp range for fetching logs in the format of  YYYY-MM-DDTHH:MM:SS.msmsms" from
+read -p "Enter the starting timestamp range for fetching logs in the format of  YYYYMMDDHHMMSSmsmsms" from
 
 #reading ending timestamp
-read -p "Enter the ending timestamp range for fetching logs in the format of YYYY-MM-DDTHH:MM:SS.msmsms" to
+read -p "Enter the ending timestamp range for fetching logs in the format of YYYYMMDDHHMMSSmsmsms" to
 
 # initializing an array with elements from start.txt file
 arr=( $( cat "start.txt" )) 
 
-#creating a file to store a log
-touch temp.txt
-#creating a file to store logs between two timestamps
+#creating a file to store logs in between  the two timestamps
 touch result.txt
 
-#initializing a variable to check if staring tag is present in the log file
+#initializing a variable to check if logs are present between the given timestamps
 flag=0
 
 #initializing a for loop to traverse through log file
 for(( i=0; i< ${#arr[@]}; i++ ))
 do
-b=`expr  ${arr[$i+1]} - 1 `  
+b=`expr  ${arr[$i+1]} - 1 ` 
 
-#getting lines between two opening tags and storing them in temp.txt
-sed -n  "${arr[$i]},$b p" exec-web.2023-02-03-03.log > temp.txt
-if grep -q "$from" temp.txt 
-then
-flag=1
+#extracting lines having string ="timestamp" in a block using sed and grep command
+# extracting timestamp as an integer by removing necessary characters from it
+a=$(sed -n  "${arr[$i]},$b p" exec-web.2023-02-03-03.log | grep  "timestamp:" | cut -c 15- | rev | cut -c4- | rev | tr -d : | tr -d - |tr -d . |tr -d T )
 
-#append logs to result.txt until ending timestamp is found
-until grep -q "$to" temp.txt 
-  do
-  cat temp.txt
-   cat temp.txt >> result.txt
-  i=`expr $i + 1 `
-b=`expr  ${arr[$i+1]} - 1 `  
-sed -n  "${arr[$i]},$b p" exec-web.2023-02-03-03.log > temp.txt
-done
-cat temp.txt
-  cat temp.txt >> result.txt
-  exit
-fi
+# checking if our timestamp is present in between the given two timestamps
+ if [ $a -ge $from ] && [ $a -le $to ] 
+ then 
+ flag=1;
+
+ #if true then append the log to the result.txt
+
+ sed -n  "${arr[$i]},$b p" exec-web.2023-02-03-03.log >> result.txt 
+ fi
 done  
-#checking whether logs are present within given timestamps in the log file
-if [ $flag == 1 ]
+if [ flag ==0 ] 
 then
-echo "No logs found"
-fi     
+echo "no logs present between the given timestamps"
+fi
+cat result.txt
                                            

@@ -145,7 +145,7 @@
 {
   level: 'debug',
   loggerType: 'multiCacheLogger',
-  timestamp: '320Z',
+  timestamp: '2023-02-03T03:45:13.568Z',
   log: 'IS_REDIS_CACHE_ENABLED: ',
   context: {
     requestId: '29627c0d-3891-42b3-ab46-151a206c3d18',
